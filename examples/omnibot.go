@@ -2,8 +2,7 @@ package main
 
 import(
   "github.com/premshree/lib-slackbot"
-  "github.com/premshree/slackbots/pagerduty-oncall"
-  "github.com/premshree/slackbots/weather"
+  "github.com/premshree/slackbots"
   "github.com/spf13/viper"
 )
 
@@ -22,8 +21,8 @@ func init() {
 func main() {
   bot := slackbot.New(slackToken)
 
-  bot.AddCommand("?oncall", "Who's on call", pagerduty.PagerDutyOnCall)
-  bot.AddCommand("?weather", "Usage: ?weather zipcode", weather.Weather)
+  bot.AddCommand("?oncall", "Who's on call", slackbots.PagerDutyOnCall)
+  bot.AddCommand("?weather", "Usage: ?weather zipcode", slackbots.Weather)
 
   bot.Run()
 }

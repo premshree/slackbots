@@ -1,4 +1,4 @@
-package weather
+package slackbots
 
 import(
   "encoding/json"

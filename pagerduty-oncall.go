@@ -1,4 +1,4 @@
-package pagerduty
+package slackbots
 
 import(
   "bytes"
@@ -33,7 +33,7 @@ var (
 
 func init() {
   viper := viper.New()
-  viper.SetConfigFile("./pagerduty-oncall/config.json")
+  viper.SetConfigFile("./config/pagerduty-oncall.json")
   viper.SetEnvPrefix(CONFIG_ENV_PREFIX)
   viper.AutomaticEnv()
   err := viper.ReadInConfig()
