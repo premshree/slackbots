@@ -1,0 +1,8 @@
+{
+  "channels": [
+    {
+      "name": "premshree-bots",
+      "escalation_policy_id": "your-escalation-id"
+    }
+  ]
+}
