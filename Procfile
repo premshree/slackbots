@@ -1,1 +1,1 @@
-worker: slackbots
+worker: omnibot

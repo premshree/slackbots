@@ -2,6 +2,9 @@
 	"ImportPath": "github.com/premshree/slackbots",
 	"GoVersion": "go1.8",
 	"GodepVersion": "v79",
+	"Packages": [
+		"./cmd/..."
+	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/PagerDuty/go-pagerduty",
