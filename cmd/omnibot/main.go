@@ -23,6 +23,7 @@ func main() {
 
   bot.AddCommand("?oncall", "Who's on call", slackbots.PagerDutyOnCall)
   bot.AddCommand("?weather", "Usage: ?weather zipcode", slackbots.Weather)
+  bot.AddCommand("?jiracreate", "Usage: ?jiracreate KEY summary @asignee", slackbots.JiraCreate)
 
   bot.Run()
 }

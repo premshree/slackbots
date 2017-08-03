@@ -76,7 +76,7 @@
 		},
 		{
 			"ImportPath": "github.com/premshree/lib-slackbot",
-			"Rev": "a2738eea3b922bb0f277afa96b0e5991266c8f1a"
+			"Rev": "3cbc79e3344949ccfab683a1e777e47fa61d5249"
 		},
 		{
 			"ImportPath": "github.com/spf13/afero",
@@ -122,6 +122,14 @@
 		{
 			"ImportPath": "gopkg.in/yaml.v2",
 			"Rev": "3b4ad1db5b2a649883ff3782f5f9f6fb52be71af"
+		},
+		{
+			"ImportPath": "github.com/premshree/lib-slackbot/vendor/github.com/nlopes/slack",
+			"Rev": "3cbc79e3344949ccfab683a1e777e47fa61d5249"
+		},
+		{
+			"ImportPath": "github.com/premshree/lib-slackbot/vendor/golang.org/x/net/websocket",
+			"Rev": "3cbc79e3344949ccfab683a1e777e47fa61d5249"
 		}
 	]
 }
