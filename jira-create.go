@@ -20,7 +20,7 @@ type JiraResponse struct {
 }
 
 const (
-  JIRA_CREATE_PATTERN = "(^[\\w]+)[\\s]+([\\w\\s]+)[\\s]+<@([A-Z0-9]+)>$"
+  JIRA_CREATE_PATTERN = "(^[\\w]+)[\\s]+([\\w\\W\\s]+)[\\s]+<@([A-Z0-9]+)>$"
   JIRA_ENV_PREFIX = "JIRA_CREATE"
   JIRA_REQUEST_TIMEOUT = 3 // seconds
   USAGE = "?jiracreate YOURPROJECT summary @asignee"
