@@ -24,6 +24,7 @@ type fn func(*Bot, string, string, ...string)
 
 var (
   channelsMap map[string]interface{}
+  usersMap map[string]string
 )
 
 // Initializes a new slackbot
@@ -51,6 +52,7 @@ func (b *Bot) Run() {
   go rtm.ManageConnection()
 
   channelsMap = b.getAllChannels()
+  usersMap = b.getAllUsers()
 
   for msg := range rtm.IncomingEvents {
     switch ev := msg.Data.(type) {
@@ -88,13 +90,17 @@ func (b *Bot) handleMessage(msg slack.Msg) {
     args = messageSlice[1:]
   }
   if _, ok := b.commands[command]; ok {
-    log.Printf("♔ %s; Channel: %s; User: %s", command, channelName, msg.User)
+    log.Printf("♔ %s on #%s by @%s", command, channelName, b.Users()[msg.User])
     if args != nil && args[0] == HELP {
       b.Reply(channelID, b.commands[command].Description)
     } else {
       b.commands[command].Callback(b, channelID, channelName, args...)
     }
   }
+}
+
+func (b *Bot) Users() map[string]string {
+  return usersMap
 }
 
 func (b *Bot) getAllChannels() map[string]interface{} {
@@ -113,7 +119,19 @@ func (b *Bot) getAllChannels() map[string]interface{} {
   for _, group := range allGroups {
     channelsMap[group.ID] = group
   }
-  log.Printf("Channels: %v", channelsMap)
 
   return channelsMap
+}
+
+func (b *Bot) getAllUsers() map[string]string {
+  allUsers, err := b.api.GetUsers()
+  if err != nil {
+    log.Fatalf("Uh oh, error fetching users: %v", err)
+  }
+  usersMap := make(map[string]string)
+  for _, user := range allUsers {
+    usersMap[user.ID] = user.Name
+  }
+
+  return usersMap
 }

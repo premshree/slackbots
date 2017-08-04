@@ -9,6 +9,7 @@ import(
   "net/http"
   "regexp"
   "strings"
+  "time"
 
   "github.com/premshree/lib-slackbot"
   "github.com/spf13/viper"
@@ -19,9 +20,10 @@ type JiraResponse struct {
 }
 
 const (
-  JIRA_CREATE_PATTERN = "(^[\\w]+)[\\s]+([\\w\\s]+)[\\s]+@[\\s]+([A-Za-z_]+$)"
-  USAGE = "?jiracreate YOURPROJECT summary @ asignee"
+  JIRA_CREATE_PATTERN = "(^[\\w]+)[\\s]+([\\w\\s]+)[\\s]+<@([A-Z0-9]+)>$"
   JIRA_ENV_PREFIX = "JIRA_CREATE"
+  JIRA_REQUEST_TIMEOUT = 3 // seconds
+  USAGE = "?jiracreate YOURPROJECT summary @asignee"
 )
 
 var (
@@ -40,7 +42,7 @@ func init() {
 func JiraCreate(bot *slackbot.Bot, channelID string, channelName string, args ...string) {
   url := fmt.Sprintf("%s/rest/api/2/issue", jiraBaseUrl)
   if args == nil {
-    bot.Reply(channelID, "Usage: ?jira KEY summary @asignee")
+    bot.Reply(channelID, fmt.Sprintf("Usage: %s", USAGE))
     return
   }
 
@@ -54,7 +56,7 @@ func JiraCreate(bot *slackbot.Bot, channelID string, channelName string, args ..
   var key, summary, asignee string
   key = strings.ToUpper(matches[0][1])
   summary = matches[0][2]
-  asignee = matches[0][3]
+  asignee = bot.Users()[matches[0][3]]
 
   jsonTpl := `{
     "fields": {
@@ -78,10 +80,14 @@ func JiraCreate(bot *slackbot.Bot, channelID string, channelName string, args ..
   req.Header.Set("Content-Type", "application/json")
   req.Header.Set("Authorization", fmt.Sprintf("Basic %s", jiraAuth))
 
-  client := &http.Client{}
+  client := &http.Client{
+    Timeout: time.Duration(JIRA_REQUEST_TIMEOUT * time.Second),
+  }
   resp, err := client.Do(req)
   if err != nil {
-    log.Fatalf("Error creating Jira ticket: %v", err)
+    log.Printf("Error creating Jira ticket: %v", err)
+    bot.Reply(channelID, fmt.Sprintf("Error connecting to %s", url))
+    return
   }
   defer resp.Body.Close()
 
