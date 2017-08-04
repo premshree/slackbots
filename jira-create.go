@@ -97,7 +97,7 @@ func JiraCreate(bot *slackbot.Bot, channelID string, channelName string, args ..
     log.Printf("Error unmarshaling json: %f", err)
   }
   if ret.Key == "" {
-    bot.Reply(channelID, "Usage: ?jira KEY summary @asignee")
+    bot.Reply(channelID, fmt.Sprintf("Usage: %s", USAGE))
     return
   }
   bot.Reply(channelID, fmt.Sprintf("Issue created: %s/browse/%s", jiraBaseUrl, ret.Key))
